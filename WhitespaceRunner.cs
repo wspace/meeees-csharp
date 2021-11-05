@@ -11,9 +11,20 @@ namespace Whitespace
     {
         static void Main(string[] args)
         {
-            //WhitespaceAssembler.WriteWSAsm("hello_world.ws", "hello_world.asm");
-            new WhitespaceRunner("../../tests/fib_test.asm").Run();
-            Console.ReadLine();
+            if (args.Length == 2 && args[0] == "run")
+            {
+                new WhitespaceRunner(args[1]).Run();
+            }
+            else if (args.Length == 3 && args[0] == "asm")
+            {
+                WhitespaceAssembler.WriteWSAsm(args[1], args[2]);
+            }
+            else
+            {
+                Console.WriteLine("Usage:");
+                Console.WriteLine("\tWhitespace run <file>");
+                Console.WriteLine("\tWhitespace asm <in_file> <out_file>");
+            }
         }
     }
 
@@ -24,12 +35,13 @@ namespace Whitespace
         private delegate void ASMCmd(WhitespaceRunner host);
         private static Dictionary<string, ASMCmd> asmToCmd = new Dictionary<string, ASMCmd>
         {
-            {"Push" , Push },
+            {"Push", Push },
             {"Copy", Copy },
             {"Swap", Swap },
             {"Pop", Pop },
             {"Add", Add },
             {"Sub", Sub },
+            {"Mult", Mult },
             {"Div", Div },
             {"Mod", Mod },
             {"St", Store },
